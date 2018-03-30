@@ -32,7 +32,7 @@ Via GitHub :
 Via le fichier jar:
 /!\ Avec le Jar déjà compilé, aucune modification de la section 2 n’est possible /!\
 1. Ouvrir une invite de commande dans le dossier contenant le fichier jar
-2. Entrer : java -jar monFichier.jar
+2. Entrer : ```java -jar monFichier.jar```
 
 #### Front
 1. Cloner le repo
