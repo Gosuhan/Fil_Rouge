@@ -1,30 +1,186 @@
-## Pratiques très conseillées:
-### Depuis gitBash avant de faire des modifications:
-- git checkout dev
-- git pull --rebase origin dev => se mettre à jour
-- créer sa branche : git checkout -b [nom_de_la_branche]
-- faire son job et tester dans Postman...
-- git status / git add / git commit => attendre avant de pusher !
-- git checkout dev
-- git pull
-- git merge [nom_de_la_branche] => voir si conflits, résoudre les conflits éventuels
-- git push
-- git branch -d [nom_de_la_branche] => supprimer sa branche
+## MODE OPÉRATOIRE
 
-### Avant de lancer la premièez fois Springboot :
-- dans mysql, créer une BDD (un schema ) qui s'appelle "fil_rouge", pas besoin de créer les tables.
-- copier le fichier "data.sql" depuis "src\main\archives_sql" dans "src\main\resources"
-- lancer Springboot, il crée les tables et insert les données contenues dans "data.sql".
-- supprimer data.sql de "src\main\resources" ET faire un refresh du projet ( F5 ), le but est que Springboot ne prennes en compte les INSERT de "data.sql" qu'une seule fois. Sinon il va dupliquer les data à chaque fois que vous lancez l'application.
-- Ne faire cela qu'une seule fois, sauf vous voulez modifier les tables en changeant les attributs des modèles.
-- En cas de modifications, il vaut mieux supprimer la BDD "fil_rouge" ( clic-G + Drop Schema ) puis la recrée ( clic Droit + Create Schema ). Puis reprendre à l'étape 2.
+### Prérequis (Back)
+- Java 1,8
+- Maven (+ commandes exécuter/déployer)
 
-### Dans Postman : il y a 2 Url qui renvoie du JSON avec GET :
-- http://localhost:8080/api/utilisateurs
-- http://localhost:8080/api/utilisateur/{id}
-### Une URL pour faire un DELETE d'un utilisateur en renseignant son id:
-- http://localhost:8080/api/utilisateur/{id}
-### L'ajout ( POST ) et l'upadte ( PUT ) d'un utilisateur se fait depuis:
-- http://localhost:8080/api/utilisateurs
+- SGBDR MySQL
+- schema.sql (création de la base et des tables)
+- data.sql (obtention des données)
 
-#### Idem " http://localhost:8080/api/***** " pour arme(s), vehicule(s), affaire(s) et suspect(s)
+#### Modifications nécessaires (Java : /Fil_Rouge/src/main/resources/application.properties)
+- spring.datasource.url=jdbc:mysql :
+- spring.datasource.username
+- spring.datasource.password
+
+- Si besoin de changer le port du serveur Tomcat,  ajouter la ligne : 
+server.port: XXXX
+
+### Prérequis (Front)
+- NodeJS
+
+### Lancement
+
+#### Back
+Via GitHub :
+1. Cloner le repo
+2. Ajouter le projet à votre IDE préférée
+3. Faire un ```MVN Clean Install```
+4. Faire un Maven Update Project
+5. Lancer l’application via : Run as Spring Boot App
+
+Via le fichier jar:
+/!\ Avec le Jar déjà compilé, aucune modification de la section 2 n’est possible /!\
+1. Ouvrir une invite de commande dans le dossier contenant le fichier jar
+2. Entrer : java -jar monFichier.jar
+
+#### Front
+1. Cloner le repo
+2. cd Fil_Rouge_Front
+3. ```npm install```
+4. ```npm install -g @angular/cli```
+5. ```ng serve -o```
+6. ```ng build``` (créer le dist/ avec l’index html)
+
+## DIAGRAMMES
+
+### USECASE
+
+- USECASE DE L’APPLICATION
+
+![](documents/UseCase.PNG)
+
+- USECASE DE L’ADMINISTRATEUR
+
+![](documents/UseCaseAdmin.PNG)
+
+
+#### /!\ LES CAS D’UTILISATION DETAILLE SONT CONSULTABLES DANS LE DOSSIER DOCUMENT /!\
+- documents/Cas_utilisation_detaille_identification.pptx
+- documents/UseCaseAffaires.docx
+- documents/UseCaseArmes.docx
+- documents/UseCaseSuspects.docx
+- documents/UseCaseVehicules.docx
+- documents/UseCaseAdmin.docx
+
+
+### DIAGRAMMES D’ACTIVITE
+
+- CONNEXION
+
+![](documents/Diagramme_activite_connexion.png)
+
+- GESTION DES UTILISATEURS
+
+![](documents/Diagramme_activite_utilisateur.png)
+
+- GESTION DES AFFAIRES
+
+![](documents/Diagramme_activite_affaire.png)
+
+- GESTION DES ARMES
+
+![](documents/Diagramme_activite_armes.png)
+
+- GESTION DES VEHICULES
+
+![](documents/Diagramme_activite_vehicules.png)
+
+
+### DIAGRAMME DE CLASSES
+
+![](documents/Diagramme_classe.png)
+
+### MOCKUPS
+
+- PAGE D’ACCUEIL
+
+![](documents/Mockup_Accueil.png)
+
+- PAGE DE L’ADMINISTRATEUR
+
+![](documents/Mockup_Admin.png)
+
+- PAGES DES AFFAIRES
+
+![](documents/Mockup_Affaires.png)
+
+- PAGES DES ARMES
+
+![](documents/Mockup_Armes.png)
+
+- PAGES DES SUSPECTS
+
+![](documents/Mockup_Suspects.png)
+
+- PAGES DES VEHICULES
+
+![](documents/Mockup_Vehicules.png)
+
+### SCHEMA SQL
+
+![](documents/Schema_BdD.PNG)
+![](documents/schema.txt)
+
+### SCRIPTS SQL
+
+#### /!\ LES SCRIPTS SQL SONT CONSULTABLES DANS LE DOSSIER DOCUMENTS /!\
+
+- documents/Schema.mwb
+- documents/filrouge_shema.sql
+- Rappel : Pour l’obtention des données, le fichier “data.sql” est nécessaire et bien présent dans le projet (/Fil_Rouge/src/main/resources/data.sql)
+
+## REQUÊTES SQL
+
+- Le framework (Java) utilisé est Hibernate.  
+Les requêtes SQL sont alors automatiquement traitées.  
+C’est pourquoi, des commentaires ont été intégrés dans les Controllers (/Fil_Rouge/src/main/java/co/simplon/filrouge/controller) afin de visualiser les requêtes SQL correspondantes.
+
+
+
+
+
+
+
+
+
+
+
+
+# @Author Davy
+
+## BACK
+
+- DataBase / Requêtes (MySQL Workbench - Travail groupé)
+- CRUD Véhicule
+- Gestion (création/suppression) liens vehicule/affaire
+- Requête affichage des affaires liées à un véhicule
+- Gestion de la recherche de la page véhicule
+- Tests unitaires
+
+### Fichiers JAVA gérés :
+- AffaireController
+- Vehicule (model) 
+- VehiculeController
+- VehiculeDAO
+- VehiculeService
+- VehiculeRepository
+- VehiculeControllerTest
+
+
+## FRONT
+
+- Page véhicule
+
+### Fichiers ANGULAR gérés :
+- vehicule.component (.css/.html/.ts) 
+- affaires-liées_au_vehicule.component(.css/.html/.ts)
+- ivehicule.ts
+- vehicule.service.ts
+- api.service.ts
+- app.module.ts
+
+
+## SAUVEGARDE
+
+- GITHUB (sauvegarde/récupération de version de projet et gestion des conflits)
