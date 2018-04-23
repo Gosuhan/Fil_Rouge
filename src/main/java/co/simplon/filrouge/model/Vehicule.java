@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "vehicule")
+@Table(name = "vehicule",
+uniqueConstraints=
+@UniqueConstraint(columnNames={"marque", "modele", "immatriculation", "couleur_vehicule"}))
 public class Vehicule extends Objet {
 
 	private String immatriculation;

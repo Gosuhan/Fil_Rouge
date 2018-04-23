@@ -114,9 +114,21 @@ public class VehiculeController {
 	/* Exemple requête SQL :
 	 * DELETE FROM vehicule WHERE id = 1;
 	 */
+//	@DeleteMapping(path = "/vehicule/{id}")
+//	public @ResponseBody void deleteVehicule(@PathVariable long id) {
+//		vehiculeService.delete(id);
+//	}
+	
 	@DeleteMapping(path = "/vehicule/{id}")
-	public @ResponseBody void deleteVehicule(@PathVariable long id) {
-		vehiculeService.delete(id);
+	public ResponseEntity<Vehicule> deleteVehicule(@PathVariable Long id) throws Exception {
+		Vehicule vehicule = vehiculeService.getVehicule(id);
+		if (vehicule == null) {
+			 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		else {
+			vehiculeService.delete(id);
+			return ResponseEntity.status(HttpStatus.OK).build();
+			}
 	}
 
 	/* exemple requête SQL :
