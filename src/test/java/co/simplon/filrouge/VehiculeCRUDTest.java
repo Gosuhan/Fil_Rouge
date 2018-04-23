@@ -24,7 +24,7 @@ public class VehiculeCRUDTest {
 	static Vehicule vehicule;
 	static Vehicule newVehicul;
 	static ResponseEntity<?> newVehicule;
-	static ResponseEntity<?> deleteVehicule;
+	static ResponseEntity<Vehicule> deleteVehicule;
 	static VehiculeService vehiculeService;
 	
 	@Autowired
@@ -41,6 +41,18 @@ public class VehiculeCRUDTest {
 	
 	@Autowired
 	private VehiculeController vehiculeController;
+	
+	@Rollback(true)
+	@Test
+	public void testCreateVehicule() {
+		try {
+			vehicule = createMock("Peugeot", "206");
+			newVehicule = vehiculeController.createVehicule(vehicule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertTrue(newVehicule != null);
+	}
 	
 	@Rollback(true)
     @Test
@@ -72,18 +84,6 @@ public class VehiculeCRUDTest {
 			e.printStackTrace();
 		}
 		assertTrue(deleteVehicule.getBody() == null);
-	}
-	
-	@Rollback(true)
-	@Test
-	public void testInsertSuspect() {
-		try {
-			vehicule = createMock("Peugeot", "206");
-			newVehicule = vehiculeController.createVehicule(vehicule);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		assertTrue(newVehicule != null);
 	}
 	
 	private Vehicule createMock(String marque, String modele) {
